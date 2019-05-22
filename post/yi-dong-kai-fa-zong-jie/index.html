@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>移动开发总结 | </title>
+<meta name="description" content="">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://aimengcg.xyz/favicon.ico?v=1558505610175">
+<link rel="stylesheet" href="https://aimengcg.xyz/styles/main.css">
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
+
+
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://aimengcg.xyz">
+        <img src="https://aimengcg.xyz/images/avatar.png?v=1558505610175" class="site-logo">
+        <h1 class="site-title"></h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="https://aimengcg.xyz/post/javascript简介/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      
+    </div>
+    <div class="site-footer">
+      
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">移动开发总结</h2>
+            <div class="post-date">2019-05-22</div>
+            
+            <div class="post-content">
+              <ul>
+<li>界面细节
+<ul>
+<li>
+<p>滚动不流畅  ⭕️</p>
+<ul>
+<li>(在滚动元素上加)-webkit-overflow-scrolling</li>
+</ul>
+</li>
+<li>
+<p>异形屏兼容 ⭕️</p>
+<ul>
+<li>使用 cordova 或 中间服务 获取异形牌安全区尺寸</li>
+</ul>
+</li>
+<li>
+<p>禁止选择文字 ⭕️</p>
+<pre><code>  * {
+    -webkit-user-select: nonei
+    -khtml-user-select: nonei
+    -moz-user-select: none_
+    -ms-user-select; none_
+    user-select: none;
+  }
+</code></pre>
+</li>
+<li>
+<p>图标尽力使用矢量图 ❇️</p>
+</li>
+<li>
+<p>阴影颜色设置   ⭕️</p>
+<ul>
+<li>这样 更符合物理世界的阴影效果 =&gt; 黑色透明实现 rgba(0, 0, 0, .3)</li>
+</ul>
+</li>
+<li>
+<p>0.5px的线宽  ⭕️</p>
+<ul>
+<li>由于现代分辨率高,手机端1px为逻辑像素而不是物理像素</li>
+<li>IOS转换后能有很好的物理效果</li>
+<li>Android 的解决办法: 给需要0.5px线的元素增加一个伪元素.然后伪元素的高度为1px.然后高度缩放一半</li>
+</ul>
+<pre><code>  .u-border-bottom {
+    position: relative;
+  )
+  .u-border-bottom:after (
+    content: ' ';
+    position: absolute;
+    left: 0;
+  width: 100_;
+    height: 1px;
+    background: var(--border);
+  transform: scaleY(0.5) ;
+  transform-origin: 50_ 100_;
+  }
+</code></pre>
+</li>
+<li>
+<p>触摸时产生半透明灰色遮罩  ⭕️</p>
+<pre><code>  a, button, input, textarea{
+    -webkit-tap-highlight-color: rgb(0,0,0,0)
+  }
+</code></pre>
+</li>
+<li>
+<p>表单元素的默认外观重置  ⭕️</p>
+<pre><code>  .css
+    -webkit-appearance: none
+</code></pre>
+</li>
+<li>
+<p>输入框placeholder的颜色修改</p>
+<pre><code>  input::-webkit-input-placehalder {
+    color: #AAAA%;
+  }
+  input:focus::-webkit-input-placeholder {
+    color: #EEEEEE;
+  }
+</code></pre>
+</li>
+</ul>
+</li>
+<li>开发细节
+<ul>
+<li>使用REM  ⭕️
+- 使用npm插件</li>
+<li>点击事件300ms的延迟  ⭕️
+<ul>
+<li><a href="https://www.npmjs.com/package/fastclick">npm-fastclick</a></li>
+</ul>
+</li>
+<li>路由切换动画  ⭕️
+<ul>
+<li><code>H5访原生转存动画插件</code></li>
+</ul>
+</li>
+<li>列表页面记住位置  ⭕️
+<ul>
+<li>使用 keep-alive</li>
+</ul>
+</li>
+<li>Android返回键控制  ⭕️
+<ul>
+<li>需要熟悉记住三个方法</li>
+</ul>
+<pre><code>  router.push
+  router.replace
+  router.back
+</code></pre>
+<ul>
+<li>从登陆页面成功后跳转首页后,返回键设置不可用  ⭕️
+<ul>
+<li>router.replace</li>
+</ul>
+</li>
+<li>在表单页面,用户填写完成信息,误触返回键需要提示是否保存修改  ⭕️
+<ul>
+<li>在页面级, <code>.vue</code> 组件中添加 beforeRouteLeave 函数,在路有变化时将会调用此函数</li>
+</ul>
+<pre><code>  export default {
+    /**
+    * _param { Object } to 路由跳转目标
+    * gparam { Object } from 路由跳转源路径
+    * _param { Obj ect } next 此函数不执行,页面将不会跳转
+    */
+    beforeRouteLeave (to, form, next) {
+      // do somethig here
+    }
+  }
+</code></pre>
+</li>
+</ul>
+</li>
+<li>长按弹框  ⭕️
+<ul>
+<li>限制用户通过长按文字弹出菜单</li>
+<li>解决办法: 文字或所有元素加<pre><code>  * {
+   -webkit-touch-callout; nonei
+  }
+</code></pre>
+</li>
+</ul>
+</li>
+<li>点击overlay关闭弹框 ❇️</li>
+<li>禁止界面旋转 ❇️</li>
+<li>常用功能数据缓存 ❇️</li>
+<li>屏幕旋转事件  ⭕️<pre><code>  window.onorientationchange = functiOn () {
+    switch (window. orientation) {
+      case -90:
+      case 90:
+      alert( '_m2_: ' + window.orientation)
+        break
+      case 0:
+      case 180:
+      alert(_!u_! _:_ + window.orientation)
+        break
+    }
+  )
+</code></pre>
+</li>
+</ul>
+</li>
+</ul>
+
+            </div>
+            
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+
+<script type="application/javascript">
+
+AOS.init();
+
+hljs.initHighlightingOnLoad()
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+
+  </body>
+</html>

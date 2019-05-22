@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8" >
 
-<title></title>
+<title>NUXT 初始化思考 | </title>
 <meta name="description" content="">
 
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
@@ -78,72 +78,72 @@
 
       <div class="main-container">
         <div class="content-container" data-aos="fade-up">
-          
-            <article class="post-item">
-              <div class="left">
-                <a href="https://aimengcg.xyz/post/mao-sheng-chan">
-                  <h2 class="post-title">猫生产</h2>
-                </a>
-                <div class="post-date">
-                  2019-05-22
-                </div>
-                <div class="post-abstract">
-                  
-                </div>
-              </div>
-              
-            </article>
-          
-            <article class="post-item">
-              <div class="left">
-                <a href="https://aimengcg.xyz/post/nuxt-chu-shi-hua-si-kao">
-                  <h2 class="post-title">NUXT 初始化思考</h2>
-                </a>
-                <div class="post-date">
-                  2019-05-21
-                </div>
-                <div class="post-abstract">
-                  
-                </div>
-              </div>
-              
-            </article>
-          
-            <article class="post-item">
-              <div class="left">
-                <a href="https://aimengcg.xyz/post/javascript简介">
-                  <h2 class="post-title">JavaScript 简介</h2>
-                </a>
-                <div class="post-date">
-                  2019-04-26
-                </div>
-                <div class="post-abstract">
-                  
-                </div>
-              </div>
-              
-            </article>
-          
-            <article class="post-item">
-              <div class="left">
-                <a href="https://aimengcg.xyz/post/bian">
-                  <h2 class="post-title">变量命名</h2>
-                </a>
-                <div class="post-date">
-                  2019-01-25
-                </div>
-                <div class="post-abstract">
-                  
-                </div>
-              </div>
-              
-            </article>
-          
+          <div class="post-detail">
+            <h2 class="post-title">NUXT 初始化思考</h2>
+            <div class="post-date">2019-05-21</div>
+            
+            <div class="post-content">
+              <p><img src="https://aimengcg.xyz/post-images/1558432193763.png" alt=""></p>
+<blockquote>
+<p>作者: 朱炜敬
+时间: 2019年04月21日 17:12
+描述: NUXT 初始化构建方案</p>
+</blockquote>
+<p>image</p>
+<ul>
+<li>编译
+<ul>
+<li>webpack + babel ( ES6降级编译后自动打包)</li>
+<li>vue-router (自动化注册路由)</li>
+<li>vuex (记录单页面状态,组件共享数据)</li>
+<li>Vue Server Renderer (配置权限)</li>
+</ul>
+</li>
+<li>配置
+<ul>
+<li>mode spa srr (单页面渲染/服务器渲染)</li>
+<li>Plugins UI组件库.工具类.http请求工具.错误监控.vue自定义指令等 需要在渲染页面前加载的JS (利用攻城道具,效率更高可指挥)
+<ul>
+<li>pug + stylus (css + html)</li>
+<li>element (UI)</li>
+<li>filter 过滤器 (date格式)</li>
+<li>REM</li>
+</ul>
+</li>
+<li>css (通用样式配置/修改第三方UI样式)</li>
+<li>layout 自定义错误页面</li>
+<li>modules (nuxt增强功能)</li>
+<li>proxyTable (代理配置)</li>
+<li>styleResouces (全局加载css变量配置)</li>
+<li>router (自定义规则/自动生成)</li>
+<li>transition (动画)</li>
+</ul>
+</li>
+<li>自定义拓展
+<ul>
+<li>ESlint + gitHost(校验代码质量,维护管理与同步习惯)</li>
+<li>Fetch (Ajax)</li>
+<li>javaScript 工具函数 (js脚手架)</li>
+</ul>
+</li>
+</ul>
 
-          <div class="pagination-container">
-  
-  
-</div>
+            </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://aimengcg.xyz/post/javascript简介">
+                  <h3 class="post-title">
+                    JavaScript 简介
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
 
         </div>
       </div>
