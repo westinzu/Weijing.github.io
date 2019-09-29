@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>c4i代码笔记 | </title>
+<meta name="description" content="">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://aimengcg.xyz/favicon.ico?v=1569727932905">
+<link rel="stylesheet" href="https://aimengcg.xyz/styles/main.css">
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
+
+
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://aimengcg.xyz">
+        <img src="https://aimengcg.xyz/images/avatar.png?v=1569727932905" class="site-logo">
+        <h1 class="site-title"></h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="https://aimengcg.xyz/post/javascript简介/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      
+    </div>
+    <div class="site-footer">
+      
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">c4i代码笔记</h2>
+            <div class="post-date">2019-09-10</div>
+            
+            <div class="post-content">
+              <h2 id="项目经验">项目经验</h2>
+<ul>
+<li>
+<h3 id="问题">问题</h3>
+<ul>
+<li>后端:
+<ul>
+<li>政策发布详情 下拉分页</li>
+<li>政策内容 一个接口，返回一个html直接渲染。(前端不做数据处理)</li>
+<li>搜索过滤(前端or后端？晓波老师)，&gt;<em>mintui是前端，woolson是后端</em>
+<ul>
+<li>产品确定：后端接口过滤</li>
+</ul>
+</li>
+<li>key值是固定的</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>
+<p>![image-20190213095238107](/Users/shinho/Library/Application Support/typora-user-images/image-20190213095238107.png)</p>
+</li>
+<li></li>
+<li></li>
+<li>
+<p>###启动项目必备工作</p>
+<ul>
+<li>
+<p>路由跳转：</p>
+<ul>
+<li>nuxt_link</li>
+<li>@click=&quot;$router.push('/')&quot;</li>
+</ul>
+</li>
+<li>
+<p>ESLint 忽略特定的文件和目录</p>
+</li>
+<li>
+<pre><code class="language-js">// vscode 设置  
+&quot;eslint.validate&quot;: [/Users/shinho/Desktop/教程/c4i代码笔记.md
+        {
+            &quot;language&quot;: &quot;vue&quot;,
+            &quot;autoFix&quot;: true
+        },
+        {
+            &quot;language&quot;: &quot;javascript&quot;,
+            &quot;autoFix&quot;: true
+        },
+    ],
+    
+</code></pre>
+</li>
+</ul>
+</li>
+<li>
+<p>如果使用封装的函数出错，那一定是写法出错。！！！请仔细阅读API 对每个属性的介绍</p>
+</li>
+<li>
+<p>如果rem换算出错，一定是chrome最小字号的原因 | 公用样式</p>
+</li>
+<li>
+<p>css</p>
+<ul>
+<li>伪元素 before after,利用 center: '/E500' 实现 ！注意第三方(mintui) 需要在 .mintui 样式下生效</li>
+</ul>
+</li>
+<li>
+<p>template 正则</p>
+<pre><code>  el-button(@click='$emit(\'close\')') 取 消
+</code></pre>
+</li>
+<li>
+<p>input的使用</p>
+<ul>
+<li>:disabled=&quot;!(id &amp;&amp; getCode)&quot;  // 动态禁用</li>
+</ul>
+</li>
+<li>
+<p>正则规律</p>
+</li>
+<li>
+<pre><code class="language-js">正则是各取所需，非常容易 
+- /^(?=.*?[A-Z]){3,4}$/     // 必须大写字母
+- /^(?=.*?[A-Z])(?=.*?[0-9]){3,4}$/     // 必须大写字母，数字
+- /^(?=.*?[A-Z])(?=.*?[0-9])(?=.*?[a-z]){3,4}$/     // 必须大写字母，数字，小写字幕
+- /^(?=.*a)(?=.*b)(?=.*c)(?=.*d)(?=.*e).*$/ // 要用正则的断言,比如要出现a,b,c,d,e这5个字母,顺序任意,可以这样写
+</code></pre>
+</li>
+</ul>
+<hr>
+<p>团队优化，请求api可统一写在   api.js文件</p>
+
+            </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://aimengcg.xyz/post/mao-sheng-chan">
+                  <h3 class="post-title">
+                    猫生产
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+
+<script type="application/javascript">
+
+AOS.init();
+
+hljs.initHighlightingOnLoad()
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+
+  </body>
+</html>

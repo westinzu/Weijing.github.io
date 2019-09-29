@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>实现一个 Vue 吸顶锚点组件 | </title>
+<meta name="description" content="">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://aimengcg.xyz/favicon.ico?v=1569727932905">
+<link rel="stylesheet" href="https://aimengcg.xyz/styles/main.css">
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
+
+
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://aimengcg.xyz">
+        <img src="https://aimengcg.xyz/images/avatar.png?v=1569727932905" class="site-logo">
+        <h1 class="site-title"></h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="https://aimengcg.xyz/post/javascript简介/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      
+    </div>
+    <div class="site-footer">
+      
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">实现一个 Vue 吸顶锚点组件</h2>
+            <div class="post-date">2019-09-16</div>
+            
+            <div class="post-content">
+              <p>1.<a href="https://zhuanlan.zhihu.com/p/59317112">实现一个 Vue 吸顶锚点组件</a>
+2.实现思路
+- tab切换吸顶
+- 内容滑动触发tab</p>
+<h4 id="实现一个-vue-吸顶锚点组件httpszhuanlanzhihucomp59317112">实现一个 Vue 吸顶锚点组件](https://zhuanlan.zhihu.com/p/59317112)</h4>
+<h4 id="实现思路">实现思路</h4>
+<ul>
+<li>tab切换吸顶</li>
+<li>内容滑动触发tab</li>
+</ul>
+<h4 id="核心代码">核心代码</h4>
+<h5 id="html">HTML</h5>
+<pre><code class="language-js">  //- 切换栏
+  .nav-bar.main-around
+		// arrowToTarget触发内容滚动
+		.nav-bar-item(
+			v-for=&quot;item,index in xxx&quot;
+			:class=&quot;{current : item.value === currentTab}&quot;
+			@click=&quot;arrowToTarget(item.value)&quot;)
+  //- 主容器 @scroll监听滑动事件
+  .chart-cell(ref=&quot;chartBody&quot; @scroll=&quot;scorllDelay&quot;)
+		xxx
+</code></pre>
+<h5 id="js">JS</h5>
+<h6 id="data">data</h6>
+<pre><code class="language-js">      // 用于函数节流
+      lastDelay: 0,
+      // 当前高亮tab
+      currentTab: 'login',
+      // 在触发滚动事件并切换高亮tab时控制不要过于频繁
+      isScorlling: false,
+      // 筛选列表
+      totalData:
+</code></pre>
+<h6 id="methods">methods</h6>
+<pre><code class="language-js">    /**
+     * 切换tab
+     * @param {String} target 当前切换条的名字
+     */
+    arrowToTarget (target) {
+      // 获取相对应的DOM(div)赋值给ref
+      let ref = this.$refs[target].length &amp;&amp; this.$refs[target].length &gt;= 1 ? this.$refs[target][0] : this.$refs[target]
+      // 非滚动状态 =&gt; 获取终端识别,计算得出不同机器的高度=&gt;触发滚动到定位=&gt;通知当前条高亮
+      if (!this.isScorlling) {
+        this.isScorlling = true
+        // android终端
+        let isAndroid = navigator.userAgent.indexOf('Android') &gt; -1 || navigator.userAgent.indexOf('Adr') &gt; -1
+        // 常规高度
+        let topParam = 100
+        if (isAndroid) {
+          topParam = 85
+        }
+        // 触发滚动条到定位
+        this.getToScroll(ref.offsetTop - topParam, Math.abs(ref.offsetTop - this.$refs.chartBody.scrollTop) / 50)
+        // 更新高亮
+        this.currentTab = target
+      }
+    },
+    /**
+     * 滚动事件流
+     * @param {Object} event 事件对象
+     */
+    scorllDelay (event) {
+      if (this.isScorlling) return
+      this.lastDelay = event.timeStamp
+      setTimeout(() =&gt; {
+        if (!this.lastDelay - event.timeStamp) {
+          this.chartScroll()
+        }
+      }, 100)
+    },
+    /**
+     * 根据滚动条高度，计算当前tab高亮
+     */
+    chartScroll () {
+      // 如非最上面
+      if (!this.$refs.chartBody.scrollTop) {
+        // 第一个
+        this.currentTab = this.totalData[0].value || ''
+      } else {
+        // 数据集合
+        let result = []
+        this.totalData.forEach((item, index) =&gt; {
+          // 获取对应的DOM
+          let ref = this.$refs[item.value].length &amp;&amp; this.$refs[item.value].length &gt;= 1 ? this.$refs[item.value][0] : this.$refs[item.value]
+          if (index !== 0) {
+            if (this.$refs.chartBody.clientHeight + this.$refs.chartBody.scrollTop &gt; ref.offsetTop) {
+              result.push(item.value)
+            }
+          }
+        })
+        this.currentTab = result[result.length - 1] || this.totalData[0].value || ''
+      }
+    },
+    /**
+     * 更新高亮，设置滚动条到相应指标
+     * @param {String} target 定位的坐标值
+     * @param {String} speedAbs 滚动动效的速度值
+     * @param {String} preValue 每次动效的当前高度值
+     */
+    getToScroll (target, speedAbs, preValue) {
+      // 当前高
+      let numTop = this.$refs.chartBody.scrollTop
+      // 防止切换回顶部后,无限轮询
+      if (preValue !== undefined &amp;&amp; preValue === numTop) return this.stopRecursive()
+      // 向下获取更多内容
+      if (numTop &lt; target) {
+        // 如果最后一步超速
+        if (this.fnIsFinally(speedAbs, target, numTop + speedAbs &gt;= target)) return this.fnFinally(target)
+        // 递归
+        this.toRecursive(target, speedAbs)
+        // 更改实例高度
+        this.$refs.chartBody.scrollTop += speedAbs
+      // 向上获取更多内容
+      } else {
+        // 如果最后一步超速
+        if (this.fnIsFinally(speedAbs, target, numTop - speedAbs &lt;= target)) return this.fnFinally(target)
+        // 递归
+        this.toRecursive(target, speedAbs)
+        // 更改实例高度
+        this.$refs.chartBody.scrollTop -= speedAbs
+      }
+    },
+    /**
+     * 判断是否滚动最后一步
+     * @param {String} speedAbs 滚动动效的速度值
+     * @param {String} target 定位的坐标值
+     * @param {String} rather 比较条件
+     * @return {Boolean} 判断结果
+     */
+    fnIsFinally (speedAbs, target, rather) {
+      if (rather) return true
+      return false
+    },
+    /**
+     * 滚动行为最后一步处理(终止滚动)
+     * @param {String} target 定位的坐标值
+     */
+    fnFinally (target) {
+      this.$refs.chartBody.scrollTop = target
+      this.stopRecursive()
+    },
+    /**
+     * 执行递归
+     * @param {String} target 定位的坐标值
+     * @param {String} speedAbs 滚动动效的速度值
+     * @param {String} preValue 每次动效的当前高度值
+     */
+    toRecursive (target, speedAbs) {
+      // 获取当前实例高度值
+      let preValue = this.$refs.chartBody.scrollTop
+      // 递归
+      setTimeout(() =&gt; {
+        this.getToScroll(target, speedAbs, preValue)
+      }, 10)
+    },
+    /**
+     * 终止递归
+     */
+    stopRecursive () {
+      setTimeout(() =&gt; {
+        this.isScorlling = false
+      }, 300)
+    },
+    /**
+     * 切换展开项
+     * @param {String} row 行数据
+     */
+    toggleFilteItem (row) {
+      row.isExpand = !row.isExpand
+    }
+</code></pre>
+<h6 id="style">style</h6>
+<pre><code class="language-js">  .nav-bar
+    width 100%
+    display: flex
+    overflow-x auto
+    background #fff
+    border-bottom 1px solid #eee
+    .nav-bar-item
+      flex-grow: 1;
+      flex-shrink: 0
+      font-size 1.3rem
+      position relative
+      color #999
+      height 4.5rem
+      line-height 4.5rem
+      text-align center
+      span
+        margin 0 1rem
+      &amp;:before
+        width 2.5rem
+        height .4rem
+        background-color rgba(255, 138, 110, 1)
+        position absolute
+        left 50%
+        transform translateX(-1.25rem)
+        bottom 0rem
+        content ''
+        display none
+      &amp;.current
+        color #333
+        font-size 1.5rem
+        &amp;:before
+          display inline-block
+
+
+</code></pre>
+<p>3.<img src="https://aimengcg.xyz/post-images/1568625625057.gif" alt=""></p>
+
+            </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://aimengcg.xyz/post/c4i">
+                  <h3 class="post-title">
+                    C4I最难忘的功能
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+
+<script type="application/javascript">
+
+AOS.init();
+
+hljs.initHighlightingOnLoad()
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+
+  </body>
+</html>

@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" >
+
+<title>筛选-抽屉式 | </title>
+<meta name="description" content="">
+
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
+<link rel="shortcut icon" href="https://aimengcg.xyz/favicon.ico?v=1569727932905">
+<link rel="stylesheet" href="https://aimengcg.xyz/styles/main.css">
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://cdn.bootcss.com/highlight.js/9.12.0/highlight.min.js"></script>
+
+<link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+
+
+
+  </head>
+  <body>
+    <div id="app" class="main">
+
+      <div class="sidebar" :class="{ 'full-height': menuVisible }">
+  <div class="top-container" data-aos="fade-right">
+    <div class="top-header-container">
+      <a class="site-title-container" href="https://aimengcg.xyz">
+        <img src="https://aimengcg.xyz/images/avatar.png?v=1569727932905" class="site-logo">
+        <h1 class="site-title"></h1>
+      </a>
+      <div class="menu-btn" @click="menuVisible = !menuVisible">
+        <div class="line"></div>
+      </div>
+    </div>
+    <div>
+      
+        
+          <a href="https://aimengcg.xyz/post/javascript简介/" class="site-nav">
+            首页
+          </a>
+        
+      
+        
+          <a href="/post/about" class="site-nav">
+            关于
+          </a>
+        
+      
+    </div>
+  </div>
+  <div class="bottom-container" data-aos="flip-up" data-aos-offset="0">
+    <div class="social-container">
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    </div>
+    <div class="site-description">
+      
+    </div>
+    <div class="site-footer">
+      
+    </div>
+  </div>
+</div>
+
+
+      <div class="main-container">
+        <div class="content-container" data-aos="fade-up">
+          <div class="post-detail">
+            <h2 class="post-title">筛选-抽屉式</h2>
+            <div class="post-date">2019-09-19</div>
+            
+            <div class="post-content">
+              <p><strong>实现思路</strong>
+布局思维:  简单地分三个模块(筛选区/抽屉区/弹出区)</p>
+<h4 id="筛选区">筛选区</h4>
+<p><strong>html</strong>
+1.布局实现逻辑为:每行为一块,然后内部循环渲染.渲染数据来源方式通过filter(v-for in fn())获取.
+2.所以此区域包含2个方法, filterPerspectiveOptions() | toggleModal()
+<strong>Js</strong></p>
+<pre><code class="language-javascript">    /**
+    * 处理当前视角排列
+    * @param {String} fliterIndex 列表取值下标
+    * @param {String} fliterOrder 列表层数
+    * @return {Array} 当前视角一二层数组
+    */
+   filterPerspectiveOptions (fliterIndex, fliterOrder) {
+     return this.perspectiveOptions.slice(fliterIndex, fliterOrder)
+   },
+</code></pre>
+<pre><code class="language-javascript">		/**
+     * 切换相对应的组件展示
+     * @param {String} selectKey 当前选中的组件key名
+     */
+    async toggleModal (selectKey) {
+      // 如果等于client||sku 打开客户和sku的modal框
+      if (this.isLimitKey(selectKey)) {
+        this.popupVisible = true
+        this.currentKey = selectKey
+        await this.getRecentList()
+        // 是否是经销商还是KA客户
+        let dealerOrClient = this.clientChecked.every(item =&gt; {
+          // =1是经销商 !=1 是KA客户
+          return item.custType === '1'
+        })
+        if (dealerOrClient &amp;&amp; selectKey === 'client') {
+          this.allCheckObj.client = JSON.parse(JSON.stringify(this.clientChecked))
+        } else if (!dealerOrClient &amp;&amp; selectKey === 'kaClient') {
+          this.allCheckObj.kaClient = JSON.parse(JSON.stringify(this.clientChecked))
+          // 当前KA客户类型
+          let kaCurrentType = this.allCheckObj.kaClient.find(item =&gt; {
+            return item.custType
+          }) || {}
+          if (this.allCheckObj.kaClient &amp;&amp; this.allCheckObj.kaClient.length) {
+            this.currentClientType = this.clientCategory.find(item =&gt; {
+              return item.type === kaCurrentType.custType
+            })
+          }
+        } else if (selectKey === 'sku') {
+          this.allCheckObj.sku = JSON.parse(JSON.stringify(this.skuChecked))
+          this.defaRecentList = this.allCheckObj.sku
+          await this.updateLabelStatus()
+        } else if (selectKey === 'identifies') {
+          this.allCheckObj.identifies = JSON.parse(JSON.stringify(this.identifiesChecked))
+          this.defaRecentList = this.allCheckObj.identifies
+        }
+        // 处理默认选中 &amp; 已选列表
+        this.bindingArr = this.allCheckObj[this.currentKey].map(item =&gt; {
+          return item.unifiedLakeId || item.lakeId || item.unifiedIdxCd || item.id
+        })
+        this.defaRecentList = this.allCheckObj[this.currentKey]
+      } else {
+        // 非客户&amp;sku时,展示相对应的组件
+        this.currentKey = this.currentKey === selectKey ? '' : selectKey
+        this.showModal = this.currentKey !== ''
+      }
+      this.$emit('toggleModal', this.showModal)
+    },
+</code></pre>
+
+            </div>
+            
+            
+              <div class="next-post">
+                <div class="next">下一篇</div>
+                <a href="https://aimengcg.xyz/post/shi-xian-yi-ge-vue-xi-ding-mao-dian-zu-jian">
+                  <h3 class="post-title">
+                    实现一个 Vue 吸顶锚点组件
+                  </h3>
+                </a>
+              </div>
+            
+
+            
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+
+<script type="application/javascript">
+
+AOS.init();
+
+hljs.initHighlightingOnLoad()
+
+var app = new Vue({
+  el: '#app',
+  data: {
+    menuVisible: false,
+  },
+})
+
+</script>
+
+
+
+
+  </body>
+</html>
